@@ -155,6 +155,7 @@ jobs:
 
   cleanup:
     runs-on: nicleary-ubuntu-k8s
+    needs: publish
     steps:
       - name: Delete artifact
         uses: geekyeggo/delete-artifact@v1

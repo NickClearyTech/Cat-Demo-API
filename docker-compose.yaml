@@ -6,17 +6,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8000:8000
+    volumes:
+      - ./app/demo:/demoapp/app/demo
     command: ['bash', '-c', 'gunicorn --bind :8000 --workers 16 --reload wsgi:application']
 
   initializer:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./app/demo:/demoapp/app/demo
     env_file:
       - .env
-    volumes:
-      - ./app/watchtower:/watchtower/app/watchtower
-      - ~/.certs/github/bot_key.pem:/key.pem
     command: [ 'bash', '-c', 'python3 manage.py migrate && python manage.py loaddata initial_data.json && python3 manage.py runscript initializer' ]
     depends_on:
       - database
@@ -34,3 +35,6 @@ services:
       - POSTGRES_DB=catapi
     ports:
       - 5432:5432
+
+volumes:
+  postgres_data:

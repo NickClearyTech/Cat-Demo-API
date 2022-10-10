@@ -9,3 +9,7 @@ gunicorn==20.1.0
 
 # Auto Generated Swagger Doc
 drf_spectacular==0.24.2
+
+# Database
+psycopg2-binary==2.9.3
+sqlparse==0.4.3

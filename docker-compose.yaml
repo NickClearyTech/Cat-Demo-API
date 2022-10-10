@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    command: ['bash', '-c', 'gunicorn --bind :8000 --workers 16 --reload wsgi:application']
+
+  initializer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./app/watchtower:/watchtower/app/watchtower
+      - ~/.certs/github/bot_key.pem:/key.pem
+    command: [ 'bash', '-c', 'python3 manage.py migrate && python manage.py loaddata initial_data.json && python3 manage.py runscript initializer' ]
+    depends_on:
+      - database
+
+
+  database:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_SERVER=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=catapi
+    ports:
+      - 5432:5432

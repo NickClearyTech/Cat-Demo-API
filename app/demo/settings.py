@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-334furp(n@&=xkb#fj+m&4y@#gqh5*v8@*ej^24^5+q&lu1p&n"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "DEVELOP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "demoapp",
-    "drf_spectacular"
+    "drf_spectacular",
+    "django_extensions"
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,7 @@ WSGI_APPLICATION = "wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+print(os.environ.get("POSTGRES_SERVER"))
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",

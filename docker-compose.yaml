@@ -8,6 +8,10 @@ services:
       - 8000:8000
     volumes:
       - ./app/demo:/demoapp/app/demo
+    env_file:
+      - .env
+    depends_on:
+      - database
     command: ['bash', '-c', 'gunicorn --bind :8000 --workers 16 --reload wsgi:application']
 
   initializer:

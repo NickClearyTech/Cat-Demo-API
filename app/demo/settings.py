@@ -24,7 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "DEVELOP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+if os.environ.get('DEBUG', 'false') == 'true':
+    DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -82,7 +84,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("POSTGRES_DB", "watchtower"),
-        "USER": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
         "HOST": os.environ.get("POSTGRES_SERVER", "localhost"),
         "PORT": "5432",
